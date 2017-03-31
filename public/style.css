@@ -1,5 +1,6 @@
 input {
-  width: 50px;
+  width: 90px;
+  font-size: 1.2em;
 }
 
 li {
@@ -9,4 +10,13 @@ li {
 
 button {
   padding: 30px;
+  font-size: 1.5em;
+}
+
+pre {
+  background-color: #bbb;
+  color: white;
+  display: inline-block;
+  padding: 5px;
+  font-size: 1.2em;
 }

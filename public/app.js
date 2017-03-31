@@ -1,29 +1,38 @@
-`use strict`;
+'use strict';
 
-function setColor(){
-  let colorVal = `#${$('form')[0].color.value}`;
-  $('#thebutton').css('background-color', colorVal)
+function setColor(ctx, next) {
+  $('button').css('background-color', '#' + ctx.params.color);
+  $('form')[0].color.value = ctx.params.color;
+  next();
 }
 
-function setRadius() {
-  let radVal = `${$('form')[0].radius.value}px`;
-  $('#thebutton').css('border-radius', radVal);
+function setRadius(ctx, next) {
+  $('button').css('border-radius', ctx.params.radius + 'px');
+  $('form')[0].radius.value = ctx.params.radius;
+  next();
 }
 
-function setPhrase(){
-  let phraseVal = $('form')[0].phrase.value;
-  console.log(phraseVal);
-  $('#thebutton').text(phraseVal);
+function setPhrase(ctx) {
+  $('button').text(ctx.params.phrase);
+  $('form')[0].phrase.value = ctx.params.phrase;
+  console.log(document.getElementById('thebutton'));
+  $('#buttoncode').text(document.getElementById('thebutton').outerHTML);
 }
 
-// Don't forget the part where we display the code
+page('/:color/:radius?/:phrase?', setColor, setRadius, setPhrase);
+page('*', ctx => console.log('404', ctx));
 
-// Page JS action can be set up here; DO THIS LAST, DAMMIT
 
-//Event listener; build this AFTER the 3 top functions
-// $(form).on('change', callback...)
-$('form').on('change', function(){
-  setColor();
-  setRadius();
-  setPhrase();
+$(function() {
+  const f = $('form')[0];
+  page();
+
+  $('form').on('change', 'input', function(){
+    const path = [f.color.value, f.radius.value, f.phrase.value].filter(v => v).join('/')
+    page.show(`/${path}`);
+  })
+})
+
+$('button').on('click', function(){
+  alert('DO NOT CLICK ME! Did I say you could click me?');
 })
